@@ -1,0 +1,8 @@
+<div id="image">
+    <div [class]="'grid grid'+page">
+        <div class="grid-sizer"></div>
+        <div *ngFor="let data of datas" class="grid-item">
+            <img [src]="data.url" [alt]="data.name">
+        </div>
+    </div>
+</div>

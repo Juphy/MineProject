@@ -1,0 +1,41 @@
+// images
+#main {
+    width: 100%;
+    height: 100%;
+}
+
+#images {
+    width: 100%;
+    overflow-y: auto;
+}
+
+.grid {
+    background: #DDD;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.grid::after {
+    content: '';
+    display: block;
+    flex-grow: 99999;
+    clear: both;
+}
+
+.grid-sizer {
+    display: none;
+}
+
+.grid-sizer,
+.grid-item {
+    flex-grow: 1;
+    margin: 3px;
+    height: 300px;
+    img {
+        height: 100%;
+        object-fit: cover;
+        max-width: 100%;
+        min-width: 100%;
+        vertical-align: bottom;
+    }
+}
