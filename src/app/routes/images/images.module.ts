@@ -3,8 +3,8 @@ import { SharedModule } from "@shared/shared.module";
 import { ImagesComponent } from "./images.component";
 import { RouterModule, Routes } from "@angular/router";
 const routes: Routes = [
-  { path: "", redirectTo: "index", pathMatch: "full" },
-  { path: "index", component: ImagesComponent }
+  { path: "", redirectTo: "album", pathMatch: "full" },
+  { path: "album", component: ImagesComponent }
 ];
 
 @NgModule({

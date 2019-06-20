@@ -10,7 +10,7 @@ const routes: Routes = [
     children: [
       { path: "", redirectTo: "dashboard", pathMatch: "full" },
       { path: "dashboard", component: MainComponent },
-      { path: "images", loadChildren: "./images/images.module#ImagesModule" }
+      { path: "image", loadChildren: "./images/images.module#ImagesModule" }
     ]
   }
 ];
