@@ -24,8 +24,8 @@
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
-              "src/assets",
-              "src/manifest.json"
+              "src/manifest.json",
+              "src/assets/images/loading.svg"
             ],
             "styles": [
               "src/theme.less",

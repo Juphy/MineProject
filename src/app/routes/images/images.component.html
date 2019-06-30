@@ -1,7 +1,17 @@
+<nz-tabset>
+    <nz-tab *ngFor="let s of source" [nzTitle] = "s.label" (nzClick)="change_tab(s.value)"></nz-tab>
+  </nz-tabset>
 <div id="image">
     <div class="grid">
         <div *ngFor="let data of datas" class="grid-item">
-            <img [attr.data-src]="data.url" [alt]="data.name" [class]="'img'+page">
+            <img [attr.data-src]="data.url" [alt]="data.name" [class]="'img'+page" [src]="defaultSrc">
+            <span>{{data.name}}</span>
         </div>
     </div>
+    <div *ngIf="!datas.length" class="loading">
+            <nz-spin nzSimple [nzSize]="'large'"></nz-spin>
+          </div>
+</div>
+<div id="album" *ngIf="flag">
+    <app-image [album_id] = "album_id" [category] = 'category'></app-image>
 </div>

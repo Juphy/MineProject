@@ -8,9 +8,8 @@ const routes: Routes = [
     path: "",
     component: LayoutComponent,
     children: [
-      { path: "", redirectTo: "dashboard", pathMatch: "full" },
-      { path: "dashboard", component: MainComponent },
-      { path: "image", loadChildren: "./images/images.module#ImagesModule" }
+      { path: "", redirectTo: "album", pathMatch: "full" },
+      { path: "album", loadChildren: "./images/images.module#ImagesModule" }
     ]
   }
 ];

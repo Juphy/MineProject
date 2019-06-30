@@ -2,13 +2,15 @@ import { NgModule } from "@angular/core";
 import { SharedModule } from "@shared/shared.module";
 import { ImagesComponent } from "./images.component";
 import { RouterModule, Routes } from "@angular/router";
+import { ImageComponent } from './image/image.component';
 const routes: Routes = [
-  { path: "", redirectTo: "album", pathMatch: "full" },
-  { path: "album", component: ImagesComponent }
+  { path: "", redirectTo: "image", pathMatch: "full" },
+  { path: "image", component: ImagesComponent },
+  { path: 'image/:id', component: ImageComponent }
 ];
 
 @NgModule({
   imports: [SharedModule, RouterModule.forChild(routes)],
-  declarations: [ImagesComponent]
+  declarations: [ImagesComponent, ImageComponent, ImageComponent]
 })
 export class ImagesModule {}

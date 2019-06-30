@@ -1,0 +1,10 @@
+<div id="image">
+  <div class="grid" *ngIf="datas.length">
+      <div *ngFor="let data of datas" class="grid-item">
+          <img [attr.data-src]="data.url" [alt]="data.name" [class]="'img'+page" [src]="defaultSrc">
+      </div>
+  </div>
+  <div *ngIf="!datas.length" class="loading">
+    <nz-spin nzSimple [nzSize]="'large'"></nz-spin>
+  </div>
+</div>

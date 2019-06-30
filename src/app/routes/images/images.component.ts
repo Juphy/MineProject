@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { BehaviorSubject, fromEvent, Observable } from "rxjs";
 import { debounceTime, map } from "rxjs/operators";
+import { default_src, data } from "@routes/DATA";
 @Component({
   selector: "app-images",
   templateUrl: "./images.component.html",
@@ -11,13 +12,25 @@ export class ImagesComponent implements OnInit {
   page = 1;
   pagesize = 50;
   datas = [];
-  
+  defaultSrc = default_src;
+  flag = false;
+  album_id;
+  category;
+  tab='album';
+  source=[
+    {label: '相册', value: 'album'}, 
+    {label: '源1', value: 'nvshens'}, 
+    {label: '源2', value: 'lsm'},
+    {label: '源3', value: '2717'},
+    {label: '源4', value: 'emmxyz'},
+    {label: '源5', value: 'win'},
+    {label: 'bing', value: 'bing'},    
+  ];
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.get_data();
+    this.change_tab(this.tab);
     const images = document.getElementById("image");
-    console.dir(images);
     fromEvent(images, "scroll")
       .pipe(
         debounceTime(200),
@@ -27,7 +40,7 @@ export class ImagesComponent implements OnInit {
         this.lazyLoad();
         if (e["scrollHeight"] - e["clientHeight"] - e["scrollTop"] < 250) {
           this.page++;
-          this.get_data();
+          this.change_tab(this.tab);
         }
       });
   }
@@ -51,12 +64,8 @@ export class ImagesComponent implements OnInit {
       });
   }
 
-  lazyLoad(url = "assets/images/loading.svg", className = "img" + this.page) {
+  lazyLoad(url = this.defaultSrc, className = "img" + this.page) {
     let imgs = document.getElementsByClassName(className);
-    Array.from(imgs).forEach(item => {
-      item["src"] = url;
-      item["style"].opacity = 1;
-    });
     let offset = function(curEle) {
       let left = curEle.offsetLeft,
         top = curEle.offsetTop,
@@ -77,15 +86,160 @@ export class ImagesComponent implements OnInit {
       image = document.getElementById("image");
     const H = image.clientHeight,
       T = image.scrollTop;
-    console.log(H, T);
     for (let i = 0; i < num; i++) {
       let h = imgs[i].hasAttribute("offset")
         ? Number(imgs[i].getAttribute("offset"))
         : 0;
-      console.log(offset(imgs[i]));
       if (offset(imgs[i]).top < H + T - h) {
-        imgs[i]["src"] = imgs[i].getAttribute("data-src");
+        if(imgs[i].getAttribute('data-src')){
+          imgs[i]["src"] = imgs[i].getAttribute("data-src");
+        }
       }
+    }
+  }
+
+  get_images(id, category){
+    this.album_id = id;
+    this.category = category;
+    this.flag = true;
+  }
+
+  change_tab(value){
+    if(this.tab!==value){
+      this.datas=[];
+      this.tab = value;
+      this.page = 1;
+    }
+    switch(value){
+      case 'bing':
+          this.http
+          .get(`/bing/list?page=${this.page}&pagesize=${this.pagesize}`)
+          .subscribe(res => {
+            if (res["status"] === 200) {
+              let result = res["result"]["rows"];
+              result.forEach(item => (item["page"] = this.page));
+              if (this.datas.length) {
+                this.datas = this.datas.concat(result);
+              } else {
+                this.datas = result;
+              }
+              setTimeout(() => {
+                this.lazyLoad();
+              });
+            }
+          });
+        break;
+      case "album":
+          this.http
+          .get(`/album/list?page=${this.page}&pagesize=${this.pagesize}`)
+          .subscribe(res => {
+            if (res["status"] === 200) {
+              let result = res["result"]["rows"];
+              result.forEach(item => (item["page"] = this.page));
+              if (this.datas.length) {
+                this.datas = this.datas.concat(result);
+              } else {
+                this.datas = result;
+              }
+              setTimeout(() => {
+                this.lazyLoad();
+              });
+            }
+          });
+        break;
+      case 'nvshens':
+          this.http
+          .get(`/image/list?page=${this.page}&pagesize=${this.pagesize}`)
+          .subscribe(res => {
+            if (res["status"] === 200) {
+              let result = res["result"]["rows"];
+              result.forEach(item => (item["page"] = this.page));
+              if (this.datas.length) {
+                this.datas = this.datas.concat(result);
+              } else {
+                this.datas = result;
+              }
+              setTimeout(() => {
+                this.lazyLoad();
+              });
+            }
+          });
+        break;
+        case 'lsm':
+            this.http
+            .get(`/meitu/list?page=${this.page}&pagesize=${this.pagesize}`)
+            .subscribe(res => {
+              if (res["status"] === 200) {
+                let result = res["result"]["rows"];
+                result.forEach(item => (item["page"] = this.page));
+                if (this.datas.length) {
+                  this.datas = this.datas.concat(result);
+                } else {
+                  this.datas = result;
+                }
+                setTimeout(() => {
+                  this.lazyLoad();
+                });
+              }
+            });
+          break;
+          case '2717':
+          case 'gtmm':
+          case 'ilovgou':   
+          case 'mmonly':
+              this.http
+              .get(`/tupian/list?page=${this.page}&pagesize=${this.pagesize}`)
+              .subscribe(res => {
+                if (res["status"] === 200) {
+                  let result = res["result"]["rows"];
+                  result.forEach(item => (item["page"] = this.page));
+                  if (this.datas.length) {
+                    this.datas = this.datas.concat(result);
+                  } else {
+                    this.datas = result;
+                  }
+                  setTimeout(() => {
+                    this.lazyLoad();
+                  });
+                }
+              });
+            break;
+            case 'emmxyz':
+                this.http
+                .get(`/picture/list?page=${this.page}&pagesize=${this.pagesize}`)
+                .subscribe(res => {
+                  if (res["status"] === 200) {
+                    let result = res["result"]["rows"];
+                    result.forEach(item => (item["page"] = this.page));
+                    if (this.datas.length) {
+                      this.datas = this.datas.concat(result);
+                    } else {
+                      this.datas = result;
+                    }
+                    setTimeout(() => {
+                      this.lazyLoad();
+                    });
+                  }
+                });
+              break;
+              case 'win':
+                  this.http
+                  .get(`/img/list?page=${this.page}&pagesize=${this.pagesize}`)
+                  .subscribe(res => {
+                    if (res["status"] === 200) {
+                      let result = res["result"]["rows"];
+                      result.forEach(item => (item["page"] = this.page));
+                      if (this.datas.length) {
+                        this.datas = this.datas.concat(result);
+                      } else {
+                        this.datas = result;
+                      }
+                      setTimeout(() => {
+                        this.lazyLoad();
+                      });
+                    }
+                  });
+                break;                                                    
     }
   }
 }
